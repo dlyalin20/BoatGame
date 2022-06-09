@@ -28,7 +28,7 @@ pg.display.set_caption(CAPTION)
 # physical constants
 GRAVITY = 9.81
 # 1/2 * density of water * drag coefficient * area dimensions
-DRAG_COEFFICIENT = .47856  # .5 * 997* .003 * .4 * .8
+DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .00003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
@@ -217,6 +217,10 @@ def render():
     screen.blit(angleSurface, (angleRect.x + 5, angleRect.y + 5))
     pg.draw.rect(screen, aColor, angleRect, 1)
 
+    # update
+    pg.display.update()
+    clock.tick(60)
+
 ####################### END RENDERING SETUP #######################
 
 ####################### DRIVER LOOP #######################
@@ -280,13 +284,9 @@ while True:
                         userAngle += event.unicode
         render()
 
-        # update
-        pg.display.update()
-        clock.tick(60)
-
     else:
 
-        while boatVelocity >= .09 and xBoat > 0 and abs(dist_from_goal) > 5:
+        while boatVelocity >= 1 and xBoat > 0:
 
             print(fired)
             print(drag)
@@ -298,10 +298,6 @@ while True:
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
             render()
-
-            # update
-            pg.display.update()
-            clock.tick(60)
 
             print(fired)
             print(drag)

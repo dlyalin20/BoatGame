@@ -28,7 +28,7 @@ pg.display.set_caption(CAPTION)
 # physical constants
 GRAVITY = 9.81
 # 1/2 * density of water * drag coefficient * area dimensions
-DRAG_COEFFICIENT = 3.364875 # .5 * 997* .03 * .5 * .5 * .9
+DRAG_COEFFICIENT = .47856  # .5 * 997* .003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
@@ -91,25 +91,29 @@ xBoat = 700
 xVelocity = 0 # ball x-velocity
 yVelocity = 0 # ball y-velocity
 boatVelocity = 0 # boat x-velocity
-dist_from_water = 5
+dist_from_water = 5 # distance of cannonball from water
 
 # Randomly Generated Variables
 seed()
 
+# makes random ball mass
 def makeBallMass():
     return round(uniform(.45, 23), 2)
 ballMass = makeBallMass()
 
+# makes random boat mass
 def makeBoatMass():
-    return round(uniform(100, 320), 2)
+    return round(uniform(20, 30), 2)
 boatMass = makeBoatMass()
-actualMass = boatMass - ballMass
+actualMass = boatMass - ballMass # actual boat mass removing wait of cannonball
 
+# distance of goal from x = 0
 def makeGoal():
     return round(uniform(20, 600), 2)
 goal = makeGoal()
-dist_from_goal = xBoat - goal
+dist_from_goal = xBoat - goal # distance of boat from goal
 
+# updates drag force
 def getDrag():
     return DRAG_COEFFICIENT * (boatVelocity ** 2)
 drag = getDrag()
@@ -183,8 +187,6 @@ buttonRect.center = (17, 720)
 
 ####################### RENDERING SETUP #######################
 
-####################### END RENDERING SETUP #######################
-
 def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
@@ -215,13 +217,14 @@ def render():
     screen.blit(angleSurface, (angleRect.x + 5, angleRect.y + 5))
     pg.draw.rect(screen, aColor, angleRect, 1)
 
-    # update
-    pg.display.update()
-    clock.tick(60)
+####################### END RENDERING SETUP #######################
 
 ####################### DRIVER LOOP #######################
 
 # game driver loop (rounds loop within)
+
+counter = 0
+
 while True:
 
     if not fired:
@@ -277,9 +280,13 @@ while True:
                         userAngle += event.unicode
         render()
 
+        # update
+        pg.display.update()
+        clock.tick(60)
+
     else:
 
-        while boatVelocity >= .5 and xBoat > 0 and abs(dist_from_goal) > 5:
+        while boatVelocity >= .09 and xBoat > 0 and abs(dist_from_goal) > 5:
 
             print(fired)
             print(drag)
@@ -291,6 +298,15 @@ while True:
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
             render()
+
+            # update
+            pg.display.update()
+            clock.tick(60)
+
+            print(fired)
+            print(drag)
+            print(boatVelocity)
+            print(xBoat)
 
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))

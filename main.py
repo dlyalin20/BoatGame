@@ -39,7 +39,7 @@ color_inactive = pg.Color(GREY)
 color_active = pg.Color(BLACK)
 
 # used for frame per second control
-clock = pg.time.Clock() 
+clock = pg.time.Clock()
 
 # sky
 sky = pg.image.load("assets/sky.jpeg")
@@ -88,6 +88,8 @@ done = False # whether simulation has ended
 angle = 0 # launch angle in degrees
 ballVelocity = 0 # initial ball launch velocity
 xBoat = 700
+xBall = 780
+yBall = 460
 xVelocity = 0 # ball x-velocity
 yVelocity = 0 # ball y-velocity
 boatVelocity = 0 # boat x-velocity
@@ -209,8 +211,8 @@ def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
     screen.blit(boat, (xBoat, 440))
-    screen.blit(cannon, (780, 435))
-    screen.blit(sailor, (760, 460))
+    screen.blit(cannon, (xBoat+80, 435))
+    screen.blit(sailor, (xBoat+60, 460))
     screen.blit(control_panel, cpRect)
     screen.blit(massText, massRect)
     screen.blit(boatText, bRect)
@@ -218,6 +220,8 @@ def render():
     screen.blit(vText, vRect)
     screen.blit(aText, aRect)
     screen.blit(buttonText, buttonRect)
+    if fired:
+        screen.blit(ball, (xBall, yBall))
 
     # target drawing
     pg.draw.rect(target, targetColor, target.get_rect())
@@ -259,8 +263,8 @@ while True:
 
     if not fired:
 
-        for event in pg.event.get(): # grab events 
-            if event.type == pg.QUIT: 
+        for event in pg.event.get(): # grab events
+            if event.type == pg.QUIT:
                 pg.quit()
                 exit()
             # handler for clicking
@@ -321,6 +325,13 @@ while True:
                     exit()
 
             drag = getDrag()
+            if yBall < 490:
+                xBall += xVelocity
+                if (yBall - yVelocity) >=490:
+                    yBall =490
+                else:
+                    yBall -= yVelocity
+                yVelocity -= GRAVITY
             xBoat -= boatVelocity
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass

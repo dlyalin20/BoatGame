@@ -352,7 +352,7 @@ while True:
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))
         else:
-                        while True:
+            while True:
                 render()
                 lostRender()
 

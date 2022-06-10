@@ -413,7 +413,7 @@ while True:
                             reset()
 
                 render()
-                lostRender()
+                if not done: lostRender()
                 frame()
 
 ####################### END DRIVER LOOP #######################

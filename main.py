@@ -89,7 +89,7 @@ ball = pg.transform.scale(ball, ballSize)
 
 # User-Dependent Variables
 fired = False # whether simulation has started
-done = False # whether simulation has ended
+done = False # when full round has ended
 angle = 0 # launch angle in degrees
 ballVelocity = 0 # initial ball launch velocity
 xBoat = 700
@@ -99,7 +99,6 @@ yBall = 460
 xVelocity = 0 # ball x-velocity
 yVelocity = 0 # ball y-velocity
 boatVelocity = 0 # boat x-velocity
-dist_from_water = 5 # distance of cannonball from water
 
 # Randomly Generated Variables
 seed()
@@ -127,8 +126,13 @@ def getDrag():
 drag = getDrag()
 
 # remaining Variables (75, 60) account for boat sprite dimensions
-xCOM = ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
-yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+def getXCOM():
+    return ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
+xCOM = getXCOM()
+
+def getYCOM():
+    return ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+yCOM = getYCOM()
 
 ####################### END VARIABLE SETUP #######################
 
@@ -155,16 +159,19 @@ BS = "Boat Mass: " + str(boatMass)
 boatText = smallFont.render(BS, True, BLACK, WATER_BLUE)
 bRect = boatText.get_rect()
 bRect.center = (45, 640)
+
 # Target Distance
 TDS = "Target Distance: " + str(dist_from_goal)
 targetText = smallFont.render(TDS, True, BLACK, WATER_BLUE)
 tRect = targetText.get_rect()
 tRect.center = (65, 660)
+
 # Velocity Text
 VS = "Input Velocity: "
 vText = smallFont.render(VS, True, BLACK, WATER_BLUE)
 vRect = vText.get_rect()
 vRect.center = (45, 680)
+
 # Angle Text
 AS = "Input Launch Angle (Degrees): "
 aText = smallFont.render(AS, True, BLACK, WATER_BLUE)
@@ -183,11 +190,13 @@ velocityRect = pg.Rect(85, 673, 20, 15)
 vColor = color_inactive
 vActive = False
 userVelocity = ''
+
 # Angle Input
 angleRect = pg.Rect(137, 693, 20, 15)
 aColor = color_inactive
 aActive = False
 userAngle = ''
+
 # Enter Button
 ES = "Fire!"
 buttonText = bigFont.render(ES, True, BLACK, GREY)
@@ -195,7 +204,7 @@ buttonRect = buttonText.get_rect()
 buttonRect.center = (17, 720)
 
 # Restart Button
-resS = "Restart Game"
+resS = "Reset Game"
 resText = bigFont.render(resS, True, BLACK, GREY)
 resRect = resText.get_rect()
 resRect.center = (550, 650)
@@ -215,8 +224,8 @@ def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
     screen.blit(boat, (xBoat, yBoat))
-    screen.blit(cannon, (xBoat+80, 435))
-    screen.blit(sailor, (xBoat+60, 460))
+    screen.blit(cannon, (xBoat + 80, 435))
+    screen.blit(sailor, (xBoat + 60, 460))
     screen.blit(control_panel, cpRect)
     screen.blit(massText, massRect)
     screen.blit(boatText, bRect)
@@ -261,6 +270,34 @@ def frame():
     pg.display.update()
     clock.tick(60)
 
+def restart():
+
+    print("here")
+
+    xBoat = 700
+
+    dist_from_goal = xBoat - goal
+
+    xBall = 780
+    yBall = 460
+    xVelocity = 0 
+    yVelocity = 0 
+    
+    xCOM = getXCOM()
+    yCOM = getYCOM()
+
+    fired = False
+    done = True
+
+def reset():
+
+    restart()
+    goal = makeGoal()
+
+    ballMass = makeBallMass()
+    boatMass = makeBoatMass()
+    actualMass = boatMass - ballMass
+
 ####################### END RENDERING SETUP #######################
 
 ####################### DRIVER LOOP #######################
@@ -270,6 +307,8 @@ def frame():
 counter = 0
 
 while True:
+
+    done = False
 
     if not fired:
 
@@ -345,26 +384,36 @@ while True:
             xBoat -= boatVelocity
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
-            xCOM = ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
-            yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+
+            xCOM = getXCOM()
+            yCOM = getYCOM()
+
             render()
             frame()
 
+        boatVelocity = 0
+
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))
+            pg.quit()
+            exit()
         else:
-            while True:
-                render()
-                lostRender()
+            while not done:
 
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
-                        pg.exit()
-                        quit()
+                        pg.quit()
+                        exit()
                     if event.type == pg.MOUSEBUTTONDOWN:
                         if repRect.collidepoint(event.pos):
-                            1
+                            cannon = pg.transform.rotate(cannon, -angle)
+                            restart()
                         if resRect.collidepoint(event.pos):
-                            xBoat = 700
+                            cannon = pg.transform.rotate(cannon, -angle)
+                            reset()
+
+                render()
+                lostRender()
+                frame()
 
 ####################### END DRIVER LOOP #######################

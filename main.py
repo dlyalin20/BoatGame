@@ -270,9 +270,8 @@ def frame():
     pg.display.update()
     clock.tick(60)
 
+# restart will play the same level
 def restart():
-
-    print("here")
 
     xBoat = 700
 
@@ -289,6 +288,7 @@ def restart():
     fired = False
     done = True
 
+# reset will start the game anew
 def reset():
 
     restart()

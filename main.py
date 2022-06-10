@@ -233,11 +233,11 @@ def render():
     screen.blit(aText, aRect)
     screen.blit(buttonText, buttonRect)
 
-    if fired:
+    if fired and xBall>850:
         screen.blit(ball, (xBall, yBall))
 
     if angle > 0:
-        blitRotateCenter(screen, cannon, (780,435), angle)
+        blitRotateCenter(screen, cannon, (xBoat+80,435), angle)
     else:
         screen.blit(cannon, (xBoat + 80, 435))
 

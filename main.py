@@ -89,7 +89,6 @@ ball = pg.transform.scale(ball, ballSize)
 
 # User-Dependent Variables
 fired = False # whether simulation has started
-done = False # when full round has ended
 angle = 0 # launch angle in degrees
 ballVelocity = 0 # initial ball launch velocity
 xBoat = 700
@@ -308,8 +307,6 @@ counter = 0
 
 while True:
 
-    done = False
-
     if not fired:
 
         for event in pg.event.get(): # grab events
@@ -390,6 +387,7 @@ while True:
 
             render()
             frame()
+            print("here")
 
         boatVelocity = 0
 
@@ -398,7 +396,7 @@ while True:
             pg.quit()
             exit()
         else:
-            while not done:
+            while fired:
 
                 for event in pg.event.get():
                     if event.type == pg.QUIT:
@@ -413,7 +411,7 @@ while True:
                             reset()
 
                 render()
-                if not done: lostRender()
+                lostRender()
                 frame()
 
 ####################### END DRIVER LOOP #######################

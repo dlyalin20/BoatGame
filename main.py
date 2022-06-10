@@ -12,6 +12,7 @@ from math import cos, sin, radians
 5. Shift control panel down
 6. Add units
 7. Add buoyancy
+8. Fix reset and restart functions
 '''
 
 ####################### INITIAL SETUP #######################
@@ -206,13 +207,13 @@ buttonRect.center = (17, 720)
 resS = "Reset Game"
 resText = bigFont.render(resS, True, BLACK, GREY)
 resRect = resText.get_rect()
-resRect.center = (550, 650)
+resRect.center = (640, 670)
 
 # Replay Button
 repS = "Replay Level"
 repText = bigFont.render(repS, True, BLACK, GREY)
 repRect = repText.get_rect()
-repRect.center = (450, 650)
+repRect.center = (550, 670)
 
 ####################### END INPUT SETUP #######################
 
@@ -387,7 +388,6 @@ while True:
 
             render()
             frame()
-            print("here")
 
         boatVelocity = 0
 
@@ -405,10 +405,41 @@ while True:
                     if event.type == pg.MOUSEBUTTONDOWN:
                         if repRect.collidepoint(event.pos):
                             cannon = pg.transform.rotate(cannon, -angle)
-                            restart()
+
+                            xBoat = 700
+
+                            dist_from_goal = xBoat - goal
+
+                            xBall = 780
+                            yBall = 460
+                            xVelocity = 0 
+                            yVelocity = 0 
+                            
+                            xCOM = getXCOM()
+                            yCOM = getYCOM()
+
+                            fired = False
                         if resRect.collidepoint(event.pos):
                             cannon = pg.transform.rotate(cannon, -angle)
-                            reset()
+                            xBoat = 700
+
+                            dist_from_goal = xBoat - goal
+
+                            xBall = 780
+                            yBall = 460
+                            xVelocity = 0 
+                            yVelocity = 0 
+                            
+                            xCOM = getXCOM()
+                            yCOM = getYCOM()
+
+                            fired = False
+
+                            goal = makeGoal()
+
+                            ballMass = makeBallMass()
+                            boatMass = makeBoatMass()
+                            actualMass = boatMass - ballMass
 
                 render()
                 lostRender()

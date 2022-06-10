@@ -28,7 +28,7 @@ pg.display.set_caption(CAPTION)
 # physical constants
 GRAVITY = 9.81
 # 1/2 * density of water * drag coefficient * area dimensions
-DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .0003 * .4 * .8
+DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .00003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
@@ -56,6 +56,11 @@ pg.draw.rect(water, waterColor, water.get_rect())
 targetSize = (10, 10)
 targetColor = pg.Color(255, 0, 0)
 target = pg.Surface(targetSize)
+
+# goal
+comSize = (10, 10)
+comColor = pg.Color(255, 0, 0)
+com = pg.Surface(comSize)
 
 # boat
 boat = pg.image.load("assets/boat.png")
@@ -88,6 +93,7 @@ done = False # whether simulation has ended
 angle = 0 # launch angle in degrees
 ballVelocity = 0 # initial ball launch velocity
 xBoat = 700
+yBoat = 440
 xBall = 780
 yBall = 460
 xVelocity = 0 # ball x-velocity
@@ -120,11 +126,14 @@ def getDrag():
     return DRAG_COEFFICIENT * (boatVelocity ** 2)
 drag = getDrag()
 
+# remaining Variables (75, 60) account for boat sprite dimensions
+xCOM = ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
+yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+
 ####################### END VARIABLE SETUP #######################
 
 ####################### TEXT SETUP #######################
 
-largeFont = pg.font.Font(None, 64)
 bigFont = pg.font.Font(None, 20)
 smallFont = pg.font.Font(None, 16)
 
@@ -164,10 +173,6 @@ aText = smallFont.render(AS, True, BLACK, WATER_BLUE)
 aRect = aText.get_rect()
 aRect.center = (55, 700)
 
-# Lost Text
-LS = "You Lost!"
-lostText = largeFont.render(LS, True, (255, 0, 0))
-
 ####################### END TEXT SETUP #######################
 
 ####################### INPUT SETUP #######################
@@ -190,27 +195,14 @@ buttonText = bigFont.render(ES, True, BLACK, GREY)
 buttonRect = buttonText.get_rect()
 buttonRect.center = (17, 720)
 
-# Restart Button
-resS = "Restart Game"
-resText = bigFont.render(resS, True, BLACK, GREY)
-resRect = resText.get_rect()
-resRect.center = (550, 650)
-
-# Replay Button
-repS = "Replay Level"
-repText = bigFont.render(repS, True, BLACK, GREY)
-repRect = repText.get_rect()
-repRect.center = (450, 650)
-
 ####################### END INPUT SETUP #######################
 
 ####################### RENDERING SETUP #######################
 
-# Always rendered
 def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
-    screen.blit(boat, (xBoat, 440))
+    screen.blit(boat, (xBoat, yBoat))
     screen.blit(cannon, (xBoat+80, 435))
     screen.blit(sailor, (xBoat+60, 460))
     screen.blit(control_panel, cpRect)
@@ -227,6 +219,10 @@ def render():
     pg.draw.rect(target, targetColor, target.get_rect())
     screen.blit(target, (goal, 500))
 
+    # COM drawing
+    pg.draw.rect(com, comColor, com.get_rect())
+    screen.blit(com, (xCOM, yCOM))
+
     # velocity input rendering
     velocitySurface = smallFont.render(userVelocity, True, vColor)
     velocityRect.w = max(50, velocitySurface.get_width() + 10)
@@ -239,15 +235,7 @@ def render():
     screen.blit(angleSurface, (angleRect.x + 5, angleRect.y + 5))
     pg.draw.rect(screen, aColor, angleRect, 1)
 
-# Rendered if player lost
-def lostRender():
-    screen.blit(lostText, (500, 600))
-    screen.blit(repText, repRect)
-    screen.blit(resText, resRect)
-
-
-# Update screen
-def frame():
+    # update
     pg.display.update()
     clock.tick(60)
 
@@ -313,16 +301,15 @@ while True:
                     else:
                         userAngle += event.unicode
         render()
-        frame()
 
     else:
 
         while boatVelocity >= 1 and xBoat > 0:
 
-            for event in pg.event.get():
-                if event.type == pg.QUIT:
-                    pg.quit()
-                    exit()
+            print(fired)
+            print(drag)
+            print(boatVelocity)
+            print(xBoat)
 
             drag = getDrag()
             if yBall < 490:
@@ -335,25 +322,23 @@ while True:
             xBoat -= boatVelocity
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
+            xCOM = ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
+            yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
             render()
-            frame()
+
+            print(fired)
+            print(drag)
+            print(boatVelocity)
+            print(xBoat)
 
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))
         else:
-            while True:
-                render()
-                lostRender()
+            print("You lost: " + str(dist_from_goal))
 
-                for event in pg.event.get():
-                    if event.type == pg.QUIT:
-                        pg.exit()
-                        quit()
-                    if event.type == pg.MOUSEBUTTONDOWN:
-                        if repRect.collidepoint(event.pos):
-                            1
-                        if resRect.collidepoint(event.pos):
-                            xBoat = 700
+        fired = False
+        pg.quit()
+        exit()
 
 
 

@@ -28,7 +28,7 @@ pg.display.set_caption(CAPTION)
 # physical constants
 GRAVITY = 9.81
 # 1/2 * density of water * drag coefficient * area dimensions
-DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .00003 * .4 * .8
+DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .0003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
@@ -122,6 +122,7 @@ drag = getDrag()
 
 ####################### TEXT SETUP #######################
 
+largeFont = pg.font.Font(None, 64)
 bigFont = pg.font.Font(None, 20)
 smallFont = pg.font.Font(None, 16)
 
@@ -161,6 +162,10 @@ aText = smallFont.render(AS, True, BLACK, WATER_BLUE)
 aRect = aText.get_rect()
 aRect.center = (55, 700)
 
+# Lost Text
+LS = "You Lost!"
+lostText = largeFont.render(LS, True, (255, 0, 0))
+
 ####################### END TEXT SETUP #######################
 
 ####################### INPUT SETUP #######################
@@ -183,10 +188,23 @@ buttonText = bigFont.render(ES, True, BLACK, GREY)
 buttonRect = buttonText.get_rect()
 buttonRect.center = (17, 720)
 
+# Restart Button
+resS = "Restart Game"
+resText = bigFont.render(resS, True, BLACK, GREY)
+resRect = resText.get_rect()
+resRect.center = (550, 650)
+
+# Replay Button
+repS = "Replay Level"
+repText = bigFont.render(repS, True, BLACK, GREY)
+repRect = repText.get_rect()
+repRect.center = (450, 650)
+
 ####################### END INPUT SETUP #######################
 
 ####################### RENDERING SETUP #######################
 
+# Always rendered
 def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
@@ -217,7 +235,15 @@ def render():
     screen.blit(angleSurface, (angleRect.x + 5, angleRect.y + 5))
     pg.draw.rect(screen, aColor, angleRect, 1)
 
-    # update
+# Rendered if player lost
+def lostRender():
+    screen.blit(lostText, (500, 600))
+    screen.blit(repText, repRect)
+    screen.blit(resText, resRect)
+
+
+# Update screen
+def frame():
     pg.display.update()
     clock.tick(60)
 
@@ -283,35 +309,40 @@ while True:
                     else:
                         userAngle += event.unicode
         render()
+        frame()
 
     else:
 
         while boatVelocity >= 1 and xBoat > 0:
 
-            print(fired)
-            print(drag)
-            print(boatVelocity)
-            print(xBoat)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    exit()
 
             drag = getDrag()
             xBoat -= boatVelocity
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
             render()
-
-            print(fired)
-            print(drag)
-            print(boatVelocity)
-            print(xBoat)
+            frame()
 
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))
         else:
-            print("You lost: " + str(dist_from_goal))
-        
-        fired = False
-        pg.quit()
-        exit()
+            while True:
+                render()
+                lostRender()
+
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        pg.exit()
+                        quit()
+                    if event.type == pg.MOUSEBUTTONDOWN:
+                        if repRect.collidepoint(event.pos):
+                            1
+                        if resRect.collidepoint(event.pos):
+                            xBoat = 700
 
 
 

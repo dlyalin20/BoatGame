@@ -94,7 +94,7 @@ angle = 0 # launch angle in degrees
 ballVelocity = 0 # initial ball launch velocity
 xBoat = 700
 yBoat = 440
-xBall = 780
+xBall = 800
 yBall = 460
 xVelocity = 0 # ball x-velocity
 yVelocity = 0 # ball y-velocity
@@ -224,7 +224,6 @@ def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
     screen.blit(boat, (xBoat, yBoat))
-    screen.blit(cannon, (xBoat + 80, 435))
     screen.blit(sailor, (xBoat + 60, 460))
     screen.blit(control_panel, cpRect)
     screen.blit(massText, massRect)
@@ -233,9 +232,14 @@ def render():
     screen.blit(vText, vRect)
     screen.blit(aText, aRect)
     screen.blit(buttonText, buttonRect)
-    
+
     if fired:
         screen.blit(ball, (xBall, yBall))
+
+    if angle > 0:
+        blitRotateCenter(screen, cannon, (780,435), angle)
+    else:
+        screen.blit(cannon, (xBoat + 80, 435))
 
     # target drawing
     pg.draw.rect(target, targetColor, target.get_rect())
@@ -277,11 +281,11 @@ def restart():
 
     dist_from_goal = xBoat - goal
 
-    xBall = 780
+    xBall = 800
     yBall = 460
-    xVelocity = 0 
-    yVelocity = 0 
-    
+    xVelocity = 0
+    yVelocity = 0
+
     xCOM = getXCOM()
     yCOM = getYCOM()
 
@@ -297,6 +301,14 @@ def reset():
     ballMass = makeBallMass()
     boatMass = makeBoatMass()
     actualMass = boatMass - ballMass
+
+# display iamge as rotated
+def blitRotateCenter(surf, image, topleft, degrees):
+
+    rotated_image = pg.transform.rotate(image, degrees)
+    new_rect = rotated_image.get_rect(center = image.get_rect(topleft = topleft).center)
+
+    surf.blit(rotated_image, new_rect)
 
 ####################### END RENDERING SETUP #######################
 
@@ -334,7 +346,6 @@ while True:
                     yVelocity = sin(radians(angle)) * ballVelocity
                     boatVelocity = (ballMass * xVelocity) / actualMass
                     drag = getDrag()
-                    cannon = pg.transform.rotate(cannon, angle)
                 if velocityRect.collidepoint(event.pos):
                     vActive = not vActive
                 else:
@@ -404,32 +415,29 @@ while True:
                         exit()
                     if event.type == pg.MOUSEBUTTONDOWN:
                         if repRect.collidepoint(event.pos):
-                            cannon = pg.transform.rotate(cannon, -angle)
-
                             xBoat = 700
 
                             dist_from_goal = xBoat - goal
 
-                            xBall = 780
+                            xBall = 800
                             yBall = 460
-                            xVelocity = 0 
-                            yVelocity = 0 
-                            
+                            xVelocity = 0
+                            yVelocity = 0
+
                             xCOM = getXCOM()
                             yCOM = getYCOM()
 
                             fired = False
                         if resRect.collidepoint(event.pos):
-                            cannon = pg.transform.rotate(cannon, -angle)
                             xBoat = 700
 
                             dist_from_goal = xBoat - goal
 
-                            xBall = 780
+                            xBall = 800
                             yBall = 460
-                            xVelocity = 0 
-                            yVelocity = 0 
-                            
+                            xVelocity = 0
+                            yVelocity = 0
+
                             xCOM = getXCOM()
                             yCOM = getYCOM()
 

@@ -220,6 +220,7 @@ def render():
     screen.blit(vText, vRect)
     screen.blit(aText, aRect)
     screen.blit(buttonText, buttonRect)
+    
     if fired:
         screen.blit(ball, (xBall, yBall))
 
@@ -327,14 +328,15 @@ while True:
             drag = getDrag()
             if yBall < 490:
                 xBall += xVelocity
-                if (yBall - yVelocity) >=490:
-                    yBall =490
+                if (yBall - yVelocity) >= 490:
+                    yBall = 490
                 else:
                     yBall -= yVelocity
                 yVelocity -= GRAVITY
             xBoat -= boatVelocity
             dist_from_goal -= boatVelocity
             boatVelocity -= drag / actualMass
+
             render()
             frame()
 

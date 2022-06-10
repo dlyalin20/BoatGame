@@ -28,7 +28,7 @@ pg.display.set_caption(CAPTION)
 # physical constants
 GRAVITY = 9.81
 # 1/2 * density of water * drag coefficient * area dimensions
-DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .00003 * .4 * .8
+DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .0003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
@@ -134,6 +134,7 @@ yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
 
 ####################### TEXT SETUP #######################
 
+largeFont = pg.font.Font(None, 64)
 bigFont = pg.font.Font(None, 20)
 smallFont = pg.font.Font(None, 16)
 
@@ -154,51 +155,62 @@ BS = "Boat Mass: " + str(boatMass)
 boatText = smallFont.render(BS, True, BLACK, WATER_BLUE)
 bRect = boatText.get_rect()
 bRect.center = (45, 640)
-
 # Target Distance
 TDS = "Target Distance: " + str(dist_from_goal)
 targetText = smallFont.render(TDS, True, BLACK, WATER_BLUE)
 tRect = targetText.get_rect()
 tRect.center = (65, 660)
-
 # Velocity Text
 VS = "Input Velocity: "
 vText = smallFont.render(VS, True, BLACK, WATER_BLUE)
 vRect = vText.get_rect()
 vRect.center = (45, 680)
-
 # Angle Text
 AS = "Input Launch Angle (Degrees): "
 aText = smallFont.render(AS, True, BLACK, WATER_BLUE)
 aRect = aText.get_rect()
 aRect.center = (55, 700)
 
+# Lost Text
+LS = "You Lost!"
+lostText = largeFont.render(LS, True, (255, 0, 0))
+
 ####################### END TEXT SETUP #######################
 
 ####################### INPUT SETUP #######################
-
 # Velocity Input
 velocityRect = pg.Rect(85, 673, 20, 15)
 vColor = color_inactive
 vActive = False
 userVelocity = ''
-
 # Angle Input
 angleRect = pg.Rect(137, 693, 20, 15)
 aColor = color_inactive
 aActive = False
 userAngle = ''
-
 # Enter Button
 ES = "Fire!"
 buttonText = bigFont.render(ES, True, BLACK, GREY)
 buttonRect = buttonText.get_rect()
 buttonRect.center = (17, 720)
 
+# Restart Button
+resS = "Restart Game"
+resText = bigFont.render(resS, True, BLACK, GREY)
+resRect = resText.get_rect()
+resRect.center = (550, 650)
+
+# Replay Button
+repS = "Replay Level"
+repText = bigFont.render(repS, True, BLACK, GREY)
+repRect = repText.get_rect()
+repRect.center = (450, 650)
+
 ####################### END INPUT SETUP #######################
 
 ####################### RENDERING SETUP #######################
 
+# Always rendered
 def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
@@ -235,6 +247,15 @@ def render():
     screen.blit(angleSurface, (angleRect.x + 5, angleRect.y + 5))
     pg.draw.rect(screen, aColor, angleRect, 1)
 
+# Rendered if player lost
+def lostRender():
+    screen.blit(lostText, (500, 600))
+    screen.blit(repText, repRect)
+    screen.blit(resText, resRect)
+
+
+# Update screen
+def frame():
     # update
     pg.display.update()
     clock.tick(60)
@@ -301,15 +322,16 @@ while True:
                     else:
                         userAngle += event.unicode
         render()
+        frame()
 
     else:
 
         while boatVelocity >= 1 and xBoat > 0:
 
-            print(fired)
-            print(drag)
-            print(boatVelocity)
-            print(xBoat)
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    pg.quit()
+                    exit()
 
             drag = getDrag()
             if yBall < 490:
@@ -325,21 +347,23 @@ while True:
             xCOM = ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
             yCOM = ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
             render()
-
-            print(fired)
-            print(drag)
-            print(boatVelocity)
-            print(xBoat)
+            frame()
 
         if abs(dist_from_goal) < 5:
             print("You won: " + str(dist_from_goal))
         else:
-            print("You lost: " + str(dist_from_goal))
+                        while True:
+                render()
+                lostRender()
 
-        fired = False
-        pg.quit()
-        exit()
-
-
+                for event in pg.event.get():
+                    if event.type == pg.QUIT:
+                        pg.exit()
+                        quit()
+                    if event.type == pg.MOUSEBUTTONDOWN:
+                        if repRect.collidepoint(event.pos):
+                            1
+                        if resRect.collidepoint(event.pos):
+                            xBoat = 700
 
 ####################### END DRIVER LOOP #######################

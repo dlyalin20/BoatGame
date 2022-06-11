@@ -207,13 +207,13 @@ wonText = largeFont.render(WS, True, RED)
 velocityRect = pg.Rect(85, 673, 20, 15)
 vColor = color_inactive
 vActive = False
-userVelocity = ''
+userVelocity = '0'
 
 # Angle Input
 angleRect = pg.Rect(137, 693, 20, 15)
 aColor = color_inactive
 aActive = False
-userAngle = ''
+userAngle = '0'
 
 # Enter Button
 ES = "Fire!"
@@ -258,7 +258,7 @@ def render():
     pg.draw.rect(screen, BLACK , pg.Rect(0,580,200,150),  2)
 
 
-    if fired and xBall>xBoat+50:
+    if fired and xBall>xBoat+130:
         screen.blit(ball, (xBall, yBall))
 
     if angle > 0:
@@ -363,11 +363,17 @@ while True:
                     # handle clicking on enter
                     fired = not fired
                     try:
-                        angle = float(userAngle.strip())
+                        if userAngle.strip() == '':
+                            angle = 0
+                        else:
+                            angle = float(userAngle.strip())
                     except ValueError:
                         continue
                     try:
-                        ballVelocity = float(userVelocity.strip())
+                        if userVelocity.strip() == '':
+                            ballVelocity=0
+                        else:
+                            ballVelocity = float(userVelocity.strip())
                     except:
                         continue
                     xVelocity = cos(radians(angle)) * ballVelocity
@@ -384,6 +390,17 @@ while True:
                     aActive = False
                 vColor = color_active if vActive else color_inactive
                 aColor = color_active if aActive else color_inactive
+
+            #default values
+            if  not vActive and userVelocity == '':
+                userVelocity = '0'
+            if not aActive and userAngle == '':
+                userAngle = '0'
+            if vActive and userVelocity == '0':
+                userVelocity = userVelocity[:-1]
+            if aActive and userAngle == '0':
+                userAngle = userAngle[:-1]
+
             # handler for saving user input to screen
             if event.type == pg.KEYDOWN:
                 # handler for velocity input rendering

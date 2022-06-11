@@ -1,3 +1,4 @@
+from argparse import HelpFormatter
 import pygame as pg
 from sys import exit
 from time import sleep
@@ -66,6 +67,13 @@ target = pg.Surface(targetSize)
 comSize = (10, 10)
 comColor = pg.Color(255, 0, 0)
 com = pg.Surface(comSize)
+
+# help icon
+help = pg.image.load("assets/help.png")
+helpSize = (60, 40)
+help = pg.transform.scale(help, helpSize)
+helpRect = help.get_rect()
+helpRect.topleft = (1140, 10)
 
 # boat
 boat = pg.image.load("assets/boat.png")
@@ -163,6 +171,54 @@ W3S = "click on Help in top right for help!"
 W3Text = largeFont.render(W3S, True, BLACK)
 W3Rect = W3Text.get_rect()
 W3Rect.topleft = (320, 650)
+
+# Help Message
+HS = """Instructions for Playing the BoatGame: \n\n
+
+The goal of BoatGame is to move the boat, which starts centered at meter 700, a certain \n
+target distance, displayed in the control panel as 'Target' in meters to the left of the \n
+boat. \n
+The player does this by inputting a certain start velocity, in meters per second, and angle, \n
+in degrees, for the cannon on the boat to shoot the cannonball at. They then hit the 'Fire!' \n
+button, projecting the cannonball to the right and sending the boat some distance to the left.\n
+If the boat is within 75 meters of the target, the player wins. Otherwise, they have the chance \n
+to either 'Replay' the same level, or 'Restart' the game with new figures. \n\n
+
+To most effectively win BoatGame, the player should rely on the underlying physics. Apart from \n
+having access to the target distance in the control panel, the player can also find there \n
+the mass of the boat and of the cannonball. It should be noted that, in the following calculations, \n
+the mass of the boat has the mass of cannonball subtracted from it once the cannonball has been fired. \n
+Additionally, each pixel on the screen is treated as one pixel for a total of 1200. \n
+After, the cannonball is fired, conservation of momentum is used to find the starting velocity of the \n
+boat. \n
+First, the cosine of the launch angle (in radians) is multipled by the input velocity to find the \n
+starting x-velocity of the cannonball. This looks as follows: \n
+\t x_vel_ball = cosine(angle) * userVelocity \n
+It is important to note that the y-velocity of the ball is not accounted for, as this is not a \n
+buoyancy simulation. \n
+After this, the motion of the boat is updated each "round" using the following steps:\n
+\t 1. The x-velocity of the boat is found using conservation of momentum.\n
+\t 2. The drag force on the boat is found by multiplying the drag coefficient\n
+\t (4.7856e-02, or .5 * 997* .0003 * .4 * .8, \n 
+\t or 1/2 * density of water * drag coefficient * area dimensions) by the square of the \n
+\t boat's x-velocity. \n
+\t 3. The acceleration of the boat is found by dividing drag force by boat mass. \n
+\t 4. The boat is moved to the left by the x-velocity. \n
+\t 5. The x-velocity has the acceleration subtracted from it. \n
+This loop continues until the x-velocity of the boat is less than 1 m/s, or until the boat \n
+moves off the edge of the screen.\n
+In pseudocode, this approximately looks like: \n
+\t x_vel_boat = (rock_mass * x_vel_ball) / boat_mass \n
+\t while x_vel_boat >= 1 and xBoat > 0: \n
+\t \t drag = DRAG_COEFFICIENT * (boatVelocity ** 2) \n
+\t \t xBoat -= x_vel_boat \n 
+\t \t dist_from_goal -= boatVelocity \n
+\t \t acceleration = drag / actualMass # mass of boat - mass of ball \n
+\t \t x_vel_boat -= acceleration\n 
+In addition, the BoatGame displays the center of mass (COM) of the system, and, \n
+if the user pays close attention, simulates the projectile motion of the  \n
+cannonball using the kinematics equations.
+"""
 
 # control panel
 CPS = "Control Panel: "
@@ -265,6 +321,7 @@ repRect.center = (550, 670)
 def render():
     screen.blit(sky, (0, 0))
     screen.blit(water, (0, 500))
+    screen.blit(help, helpRect)
     screen.blit(boat, (xBoat, yBoat))
     screen.blit(sailor, (xBoat + 60, 460))
     pg.draw.rect(screen, WHITE , pg.Rect(0,580,200,150))
@@ -280,7 +337,7 @@ def render():
     bRect.center = (55, 640)
     screen.blit(boatText, bRect)
 
-    targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)) + " km", True, BLACK, WHITE)
+    targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)) + " m", True, BLACK, WHITE)
     tRect = targetText.get_rect()
     tRect.center = (73, 660)
     screen.blit(targetText, tRect)
@@ -425,6 +482,8 @@ while not started:
         if event.type == pg.MOUSEBUTTONDOWN:
             if startRect.collidepoint(event.pos):
                 started = True
+            if helpRect.collidepoint(event.pos):
+                print(HS)
 
     render()
     screen.blit(W1Text, W1Rect)

@@ -171,22 +171,13 @@ cpRect = control_panel.get_rect()
 cpRect.center = (50, 600)
 
 # Cannonball Mass
-MS = "Cannonball Mass: " + str(ballMass)
-massText = smallFont.render(MS, True, BLACK, WHITE)
-massRect = massText.get_rect()
-massRect.center = (64, 620)
+MS = "Cannonball Mass: "
 
 # Boat Mass
-BS = "Boat Mass: " + str(boatMass)
-boatText = smallFont.render(BS, True, BLACK, WHITE)
-bRect = boatText.get_rect()
-bRect.center = (47, 640)
+BS = "Boat Mass: "
 
 # Target Distance
-TDS = "Target Distance: " + str(dist_from_goal)
-targetText = smallFont.render(TDS, True, BLACK, WHITE)
-tRect = targetText.get_rect()
-tRect.center = (64, 660)
+TDS = "Target Distance: "
 
 # Velocity Text
 VS = "Input Velocity: "
@@ -278,9 +269,22 @@ def render():
     screen.blit(sailor, (xBoat + 60, 460))
     pg.draw.rect(screen, WHITE , pg.Rect(0,580,200,150))
     screen.blit(control_panel, cpRect)
+
+    massText = smallFont.render(MS + str(ballMass), True, BLACK, WHITE)
+    massRect = massText.get_rect()
+    massRect.center = (64, 620)
     screen.blit(massText, massRect)
+
+    boatText = smallFont.render(BS + str(boatMass), True, BLACK, WHITE)
+    bRect = boatText.get_rect()
+    bRect.center = (47, 640)
     screen.blit(boatText, bRect)
+
+    targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)), True, BLACK, WHITE)
+    tRect = targetText.get_rect()
+    tRect.center = (64, 660)
     screen.blit(targetText, tRect)
+
     screen.blit(comText,  (xCOM, yCOM+10))
     screen.blit(goalText,  (goal, 500+10))
     screen.blit(vText, vRect)
@@ -333,34 +337,6 @@ def frame():
     # update
     pg.display.update()
     clock.tick(60)
-
-# restart will play the same level
-def restart():
-
-    xBoat = 700
-
-    dist_from_goal = xBoat +75 - goal
-
-    xBall = 800
-    yBall = 460
-    xVelocity = 0
-    yVelocity = 0
-
-    xCOM = getXCOM()
-    yCOM = getYCOM()
-
-    fired = False
-    done = True
-
-# reset will start the game anew
-def reset():
-
-    restart()
-    goal = makeGoal()
-
-    ballMass = makeBallMass()
-    boatMass = makeBoatMass()
-    actualMass = boatMass - ballMass
 
 # display iamge as rotated
 def blitRotateCenter(surf, image, topleft, degrees):
@@ -460,6 +436,8 @@ while not started:
 
 while True:
 
+
+
     if not fired:
 
         for event in pg.event.get(): # grab events
@@ -483,7 +461,7 @@ while True:
                         continue
                     try:
                         if userVelocity.strip() == '':
-                            ballVelocity=0
+                            ballVelocity = 0
                         else:
                             ballVelocity = float(userVelocity.strip())
                     except:
@@ -601,6 +579,7 @@ while True:
                         exit()
                     if event.type == pg.MOUSEBUTTONDOWN:
                         if repRect.collidepoint(event.pos):
+
                             xBoat = 700
 
                             dist_from_goal = xBoat +75 - goal
@@ -618,16 +597,16 @@ while True:
                         if resRect.collidepoint(event.pos):
 
                             xBoat = 700
-                            goal = makeGoal()
-                            dist_from_goal = xBoat +75 - goal
+                            goal = round(uniform(20, 600), 2)
+                            dist_from_goal = xBoat + 75 - goal
 
                             xBall = 800
                             yBall = 460
                             xVelocity = 0
                             yVelocity = 0
 
-                            ballMass = makeBallMass()
-                            boatMass = makeBoatMass()
+                            ballMass = round(uniform(.45, 23), 2)
+                            boatMass = round(uniform(20, 30), 2)
                             actualMass = boatMass - ballMass
 
                             xCOM = getXCOM()

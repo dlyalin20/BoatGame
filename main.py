@@ -11,7 +11,6 @@ from math import cos, sin, radians
 3. Add intro slide & help slide
 4. Add general classes
 5. Shift control panel down
-6. Add units
 7. Add buoyancy
 8. Replace COM symbol
 9. Make win/lose screen nicer
@@ -277,13 +276,13 @@ goalRect.topleft = (goal, 510)
 LS = "You Lost!"
 lostText = largeFont.render(LS, True, RED)
 lostRect = lostText.get_rect()
-lostRect.center = (500, 600)
+lostRect.center = (590, 630)
 
 # Won Text
 WS = "You Won!"
 wonText = largeFont.render(WS, True, RED)
 wonRect = wonText.get_rect()
-wonRect.center = (500, 600)
+wonRect.center = (580, 620)
 
 ####################### END TEXT SETUP #######################
 
@@ -394,16 +393,17 @@ def render():
 
 # Rendered if player lost
 def lostRender():
-    #screen.blit(lostText, lostRect)
+    screen.blit(lostText, lostRect)
     screen.blit(repText, repRect)
     screen.blit(resText, resRect)
     screen.blit(lose, (400,0))
 
 # rendered if player won
 def wonRender():
-    #screen.blit(wonText, wonRect)
+    screen.blit(wonText, wonRect)
     screen.blit(resText, res2Rect)
     screen.blit(win, (400,0))
+
 # Update screen
 def frame():
     # update
@@ -532,7 +532,7 @@ while True:
                 exit()
             # handler for clicking
             if event.type == pg.MOUSEBUTTONDOWN:
-                # 
+                # help
                 if helpRect.collidepoint(event.pos):
                     print(HS)
                     for i in range(100):
@@ -645,21 +645,22 @@ while True:
                     if event.type == pg.QUIT:
                         pg.quit()
                         exit()
-                    if helpRect.collidepoint(event.pos):
-                        print(HS)
-                        for i in range(100):
-                            for event in pg.event.get():
-                                if event.type == pg.QUIT:
-                                    pg.quit()
-                                    exit()
-                        render()
-                        screen.blit(W1Text, W1Rect)
-                        screen.blit(W2Text, W2Rect)
-                        screen.blit(W3Text, W3Rect)
-                        screen.blit(startText, startRect)
-                        screen.blit(LHText, LHRect)
-                        frame()
                     if event.type == pg.MOUSEBUTTONDOWN:
+
+                        if helpRect.collidepoint(event.pos):
+                            print(HS)
+                            for i in range(100):
+                                for event in pg.event.get():
+                                    if event.type == pg.QUIT:
+                                        pg.quit()
+                                        exit()
+                            render()
+                            screen.blit(W1Text, W1Rect)
+                            screen.blit(W2Text, W2Rect)
+                            screen.blit(W3Text, W3Rect)
+                            screen.blit(startText, startRect)
+                            screen.blit(LHText, LHRect)
+                            frame()
 
                         if res2Rect.collidepoint(event.pos):
 
@@ -692,21 +693,21 @@ while True:
                     if event.type == pg.QUIT:
                         pg.quit()
                         exit()
-                    if helpRect.collidepoint(event.pos):
-                        print(HS)
-                        for i in range(100):
-                            for event in pg.event.get():
-                                if event.type == pg.QUIT:
-                                    pg.quit()
-                                    exit()
-                        render()
-                        screen.blit(W1Text, W1Rect)
-                        screen.blit(W2Text, W2Rect)
-                        screen.blit(W3Text, W3Rect)
-                        screen.blit(startText, startRect)
-                        screen.blit(LHText, LHRect)
-                        frame()
                     if event.type == pg.MOUSEBUTTONDOWN:
+                        if helpRect.collidepoint(event.pos):
+                            print(HS)
+                            for i in range(100):
+                                for event in pg.event.get():
+                                    if event.type == pg.QUIT:
+                                        pg.quit()
+                                        exit()
+                            render()
+                            screen.blit(W1Text, W1Rect)
+                            screen.blit(W2Text, W2Rect)
+                            screen.blit(W3Text, W3Rect)
+                            screen.blit(startText, startRect)
+                            screen.blit(LHText, LHRect)
+                            frame()
                         if repRect.collidepoint(event.pos):
 
                             xBoat = 700

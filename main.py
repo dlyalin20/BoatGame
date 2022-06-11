@@ -121,7 +121,7 @@ actualMass = boatMass - ballMass # actual boat mass removing wait of cannonball
 def makeGoal():
     return round(uniform(20, 600), 2)
 goal = makeGoal()
-dist_from_goal = xBoat - goal # distance of boat from goal
+dist_from_goal = xBoat + 75 - goal # distance of boat from goal
 
 # updates drag force
 def getDrag():
@@ -134,7 +134,7 @@ def getXCOM():
 xCOM = getXCOM()
 
 def getYCOM():
-    return ((yBoat+60) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+    return ((yBoat+70) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
 yCOM = getYCOM()
 
 ####################### END VARIABLE SETUP #######################
@@ -184,13 +184,13 @@ aRect.center = (56, 700)
 # COM TEXT
 COMS = "COM"
 comText = smallFont.render(COMS, True, BLACK)
-comRect = aText.get_rect()
+comRect = comText.get_rect()
 comRect.topleft = (xCOM, yCOM+10)
 
 # goal TEXT
 GS = "GOAL"
 goalText = smallFont.render(GS, True, GOLD)
-goalRect = aText.get_rect()
+goalRect = goalText.get_rect()
 goalRect.topleft = (goal, 510)
 # Lost Text
 LS = "You Lost!"
@@ -307,7 +307,7 @@ def restart():
 
     xBoat = 700
 
-    dist_from_goal = xBoat - goal
+    dist_from_goal = xBoat +75 - goal
 
     xBall = 800
     yBall = 460
@@ -447,20 +447,20 @@ while True:
 
         boatVelocity = 0
 
-        if abs(dist_from_goal) < 5:
+        if abs(dist_from_goal) < 75:
             while fired:
 
-                for event in pg.event.quit():
+                for event in pg.event.get():
                     if event.type == pg.QUIT:
                         pg.quit()
                         exit()
                     if event.type == pg.MOUSEBUTTONDOWN:
 
-                        if resRect.collidepoint(event.pos):
+                        if res2Rect.collidepoint(event.pos):
 
                             xBoat = 700
                             goal = makeGoal()
-                            dist_from_goal = xBoat - goal
+                            dist_from_goal = xBoat +75 - goal
 
                             xBall = 800
                             yBall = 460
@@ -491,7 +491,7 @@ while True:
                         if repRect.collidepoint(event.pos):
                             xBoat = 700
 
-                            dist_from_goal = xBoat - goal
+                            dist_from_goal = xBoat +75 - goal
 
                             xBall = 800
                             yBall = 460
@@ -507,7 +507,7 @@ while True:
 
                             xBoat = 700
                             goal = makeGoal()
-                            dist_from_goal = xBoat - goal
+                            dist_from_goal = xBoat +75 - goal
 
                             xBall = 800
                             yBall = 460

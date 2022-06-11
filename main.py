@@ -159,7 +159,7 @@ W2Rect = W2Text.get_rect()
 W2Rect.topleft = (340, 600)
 
 # Welcome Text 3
-W3S = "click on Help in top right for help!" 
+W3S = "click on Help in top right for help!"
 W3Text = largeFont.render(W3S, True, BLACK)
 W3Rect = W3Text.get_rect()
 W3Rect.topleft = (320, 650)
@@ -171,28 +171,28 @@ cpRect = control_panel.get_rect()
 cpRect.center = (50, 600)
 
 # Cannonball Mass
-MS = "Cannonball Mass: " + str(ballMass)
+MS = "Cannonball Mass: " + str(ballMass) + " kg"
 massText = smallFont.render(MS, True, BLACK, WHITE)
 massRect = massText.get_rect()
-massRect.center = (64, 620)
+massRect.center = (73, 620)
 
 # Boat Mass
-BS = "Boat Mass: " + str(boatMass)
+BS = "Boat Mass: " + str(boatMass) + " kg"
 boatText = smallFont.render(BS, True, BLACK, WHITE)
 bRect = boatText.get_rect()
-bRect.center = (47, 640)
+bRect.center = (55, 640)
 
 # Target Distance
-TDS = "Target Distance: " + str(dist_from_goal)
+TDS = "Target Distance: " + str(round(dist_from_goal, 2)) + " m"
 targetText = smallFont.render(TDS, True, BLACK, WHITE)
 tRect = targetText.get_rect()
-tRect.center = (64, 660)
+tRect.center = (72, 660)
 
 # Velocity Text
-VS = "Input Velocity: "
+VS = "Input Velocity (m/s): "
 vText = smallFont.render(VS, True, BLACK, WHITE)
 vRect = vText.get_rect()
-vRect.center = (44, 680)
+vRect.center = (60, 680)
 
 # Angle Text
 AS = "Input Launch Angle (Degrees): "
@@ -235,7 +235,7 @@ startRect = startText.get_rect()
 startRect.topleft = (600, 700)
 
 # Velocity Input
-velocityRect = pg.Rect(85, 673, 20, 15)
+velocityRect = pg.Rect(113, 673, 20, 15)
 vColor = color_inactive
 vActive = False
 userVelocity = '0'
@@ -438,7 +438,7 @@ for counter in  range(len(W3S) + 1):
     i += 5
     frame()
     sleep(.1)
-    
+
 started = False
 while not started:
 
@@ -456,7 +456,7 @@ while not started:
     screen.blit(W3Text, W3Rect)
     screen.blit(startText, startRect)
     frame()
-    
+
 
 while True:
 

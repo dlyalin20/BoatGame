@@ -13,6 +13,7 @@ from math import cos, sin, radians
 6. Add units
 7. Add buoyancy
 8. Replace COM symbol
+9. Make win/lose screen nicer
 '''
 
 ####################### INITIAL SETUP #######################
@@ -128,7 +129,7 @@ def getDrag():
     return DRAG_COEFFICIENT * (boatVelocity ** 2)
 drag = getDrag()
 
-# remaining Variables (75, 60) account for boat sprite dimensions
+# centers of mass (75, 60) account for boat sprite dimensions
 def getXCOM():
     return ((xBoat+75) * actualMass + xBall * ballMass) / (actualMass + ballMass)
 xCOM = getXCOM()

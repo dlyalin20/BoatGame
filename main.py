@@ -1,5 +1,6 @@
 import pygame as pg
 from sys import exit
+from time import sleep
 from random import seed, uniform
 from math import cos, sin, radians
 
@@ -38,7 +39,6 @@ WATER_BLUE = (58, 213, 199)
 BLACK = (0, 0, 0)
 GREY = (127, 127, 127)
 RED = (255, 0, 0)
-WHITE = (255, 255, 255)
 GOLD = (255, 215, 0)
 color_inactive = pg.Color(GREY)
 color_active = pg.Color(BLACK)
@@ -122,7 +122,7 @@ actualMass = boatMass - ballMass # actual boat mass removing wait of cannonball
 def makeGoal():
     return round(uniform(20, 600), 2)
 goal = makeGoal()
-dist_from_goal = xBoat + 75 - goal # distance of boat from goal
+dist_from_goal = round(xBoat + 75 - goal, 2) # distance of boat from goal
 
 # updates drag force
 def getDrag():
@@ -142,9 +142,27 @@ yCOM = getYCOM()
 
 ####################### TEXT SETUP #######################
 
-largeFont = pg.font.Font(None, 64)
-bigFont = pg.font.Font(None, 20)
 smallFont = pg.font.Font(None, 16)
+bigFont = pg.font.Font(None, 20)
+largeFont = pg.font.Font(None, 64)
+
+# Welcome Text 1
+W1S = "Welcome to the BoatGame!"
+W1Text = largeFont.render(W1S, True, BLACK)
+W1Rect = W1Text.get_rect()
+W1Rect.topleft = (355, 550)
+
+# Welcome Text 2
+W2S = "Click on Start to start game, or"
+W2Text = largeFont.render(W2S, True, BLACK)
+W2Rect = W2Text.get_rect()
+W2Rect.topleft = (340, 600)
+
+# Welcome Text 3
+W3S = "click on Help in top right for help!" 
+W3Text = largeFont.render(W3S, True, BLACK)
+W3Rect = W3Text.get_rect()
+W3Rect.topleft = (320, 650)
 
 # control panel
 CPS = "Control Panel: "
@@ -193,17 +211,29 @@ GS = "GOAL"
 goalText = smallFont.render(GS, True, GOLD)
 goalRect = goalText.get_rect()
 goalRect.topleft = (goal, 510)
+
 # Lost Text
 LS = "You Lost!"
 lostText = largeFont.render(LS, True, RED)
+lostRect = lostText.get_rect()
+lostRect.center = (500, 600)
 
 # Won Text
 WS = "You Won!"
 wonText = largeFont.render(WS, True, RED)
+wonRect = wonText.get_rect()
+wonRect.center = (500, 600)
 
 ####################### END TEXT SETUP #######################
 
 ####################### INPUT SETUP #######################
+
+# Start Button
+SS = "Start!"
+startText = largeFont.render(SS, True, BLACK)
+startRect = startText.get_rect()
+startRect.topleft = (600, 700)
+
 # Velocity Input
 velocityRect = pg.Rect(85, 673, 20, 15)
 vColor = color_inactive
@@ -289,12 +319,13 @@ def render():
 
 # Rendered if player lost
 def lostRender():
-    screen.blit(lostText, (500, 600))
+    screen.blit(lostText, lostRect)
     screen.blit(repText, repRect)
     screen.blit(resText, resRect)
 
+# rendered if player won
 def wonRender():
-    screen.blit(wonText, (500, 600))
+    screen.blit(wonText, wonRect)
     screen.blit(resText, res2Rect)
 
 # Update screen
@@ -345,7 +376,87 @@ def blitRotateCenter(surf, image, topleft, degrees):
 
 # game driver loop (rounds loop within)
 
+i = 0
 counter = 0
+clicked = False
+for counter in range(len(W1S) + 1):
+
+    if clicked: break
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
+            exit()
+        if event.type == pg.MOUSEBUTTONDOWN: clicked = not clicked
+
+    tmp = largeFont.render(W1S[:counter] + "|", True, BLACK)
+    render()
+    screen.blit(tmp, (475 - i, 550))
+    i += 5
+    frame()
+    sleep(.1)
+
+i = 0
+counter = 0
+clicked = False
+for counter in range(len(W2S) + 1):
+
+    if clicked: break
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
+            exit()
+        if event.type == pg.MOUSEBUTTONDOWN: clicked = not clicked
+
+    tmp = largeFont.render(W2S[:counter] + "|", True, BLACK)
+    render()
+    screen.blit(W1Text, W1Rect)
+    screen.blit(tmp, (500 - i, 600))
+    i += 5
+    frame()
+    sleep(.1)
+
+i = 0
+counter = 0
+clicked = False
+for counter in  range(len(W3S) + 1):
+
+    if clicked: break
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
+            exit()
+        if event.type == pg.MOUSEBUTTONDOWN: clicked = not clicked
+
+    tmp = largeFont.render(W3S[:counter] + "|", True, BLACK)
+    render()
+    screen.blit(W1Text, W1Rect)
+    screen.blit(W2Text, W2Rect)
+    screen.blit(tmp, (500 - i, 650))
+    i += 5
+    frame()
+    sleep(.1)
+    
+started = False
+while not started:
+
+    for event in pg.event.get():
+        if event.type == pg.QUIT:
+            pg.quit()
+            exit()
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if startRect.collidepoint(event.pos):
+                started = True
+
+    render()
+    screen.blit(W1Text, W1Rect)
+    screen.blit(W2Text, W2Rect)
+    screen.blit(W3Text, W3Rect)
+    screen.blit(startText, startRect)
+    frame()
+    
 
 while True:
 

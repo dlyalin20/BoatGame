@@ -97,7 +97,7 @@ ballSize = (10, 10)
 ball = pg.transform.scale(ball, ballSize)
 
 # win meme
-win = pg.image.load("assets/win.png")
+win = pg.image.load("assets/win.jpg")
 winSize = (400, 400)
 win = pg.transform.scale(win, winSize)
 

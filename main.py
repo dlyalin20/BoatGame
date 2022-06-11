@@ -159,7 +159,7 @@ W2Rect = W2Text.get_rect()
 W2Rect.topleft = (340, 600)
 
 # Welcome Text 3
-W3S = "click on Help in top right for help!" 
+W3S = "click on Help in top right for help!"
 W3Text = largeFont.render(W3S, True, BLACK)
 W3Rect = W3Text.get_rect()
 W3Rect.topleft = (320, 650)
@@ -180,10 +180,10 @@ BS = "Boat Mass: "
 TDS = "Target Distance: "
 
 # Velocity Text
-VS = "Input Velocity: "
+VS = "Input Velocity (m/s): "
 vText = smallFont.render(VS, True, BLACK, WHITE)
 vRect = vText.get_rect()
-vRect.center = (44, 680)
+vRect.center = (60, 680)
 
 # Angle Text
 AS = "Input Launch Angle (Degrees): "
@@ -226,7 +226,7 @@ startRect = startText.get_rect()
 startRect.topleft = (600, 700)
 
 # Velocity Input
-velocityRect = pg.Rect(85, 673, 20, 15)
+velocityRect = pg.Rect(113, 673, 20, 15)
 vColor = color_inactive
 vActive = False
 userVelocity = '0'
@@ -414,7 +414,7 @@ for counter in  range(len(W3S) + 1):
     i += 5
     frame()
     sleep(.1)
-    
+
 started = False
 while not started:
 
@@ -432,7 +432,7 @@ while not started:
     screen.blit(W3Text, W3Rect)
     screen.blit(startText, startRect)
     frame()
-    
+
 
 while True:
 

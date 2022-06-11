@@ -270,19 +270,19 @@ def render():
     pg.draw.rect(screen, WHITE , pg.Rect(0,580,200,150))
     screen.blit(control_panel, cpRect)
 
-    massText = smallFont.render(MS + str(ballMass), True, BLACK, WHITE)
+    massText = smallFont.render(MS + str(ballMass) + " kg", True, BLACK, WHITE)
     massRect = massText.get_rect()
-    massRect.center = (64, 620)
+    massRect.center = (70, 620)
     screen.blit(massText, massRect)
 
-    boatText = smallFont.render(BS + str(boatMass), True, BLACK, WHITE)
+    boatText = smallFont.render(BS + str(boatMass) + " kg", True, BLACK, WHITE)
     bRect = boatText.get_rect()
-    bRect.center = (47, 640)
+    bRect.center = (55, 640)
     screen.blit(boatText, bRect)
 
-    targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)), True, BLACK, WHITE)
+    targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)) + " km", True, BLACK, WHITE)
     tRect = targetText.get_rect()
-    tRect.center = (64, 660)
+    tRect.center = (73, 660)
     screen.blit(targetText, tRect)
 
     screen.blit(comText,  (xCOM, yCOM+10))

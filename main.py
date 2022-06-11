@@ -1,4 +1,3 @@
-from argparse import HelpFormatter
 import pygame as pg
 from sys import exit
 from time import sleep
@@ -171,6 +170,12 @@ W3S = "click on Help in top right for help!"
 W3Text = largeFont.render(W3S, True, BLACK)
 W3Rect = W3Text.get_rect()
 W3Rect.topleft = (320, 650)
+
+# Look here
+LHS = "Look in the terminal for instructions!"
+LHText = bigFont.render(LHS, True, BLACK)
+LHRect = LHText.get_rect()
+LHRect.topleft = (925, 25)
 
 # Help Message
 HS = """Instructions for Playing the BoatGame: \n\n
@@ -484,6 +489,18 @@ while not started:
                 started = True
             if helpRect.collidepoint(event.pos):
                 print(HS)
+                for i in range(100):
+                    for event in pg.event.get():
+                        if event.type == pg.QUIT:
+                            pg.quit()
+                            exit()
+                    render()
+                    screen.blit(W1Text, W1Rect)
+                    screen.blit(W2Text, W2Rect)
+                    screen.blit(W3Text, W3Rect)
+                    screen.blit(startText, startRect)
+                    screen.blit(LHText, LHRect)
+                    frame()
 
     render()
     screen.blit(W1Text, W1Rect)
@@ -505,6 +522,21 @@ while True:
                 exit()
             # handler for clicking
             if event.type == pg.MOUSEBUTTONDOWN:
+                # 
+                if helpRect.collidepoint(event.pos):
+                    print(HS)
+                    for i in range(100):
+                        for event in pg.event.get():
+                            if event.type == pg.QUIT:
+                                pg.quit()
+                                exit()
+                    render()
+                    screen.blit(W1Text, W1Rect)
+                    screen.blit(W2Text, W2Rect)
+                    screen.blit(W3Text, W3Rect)
+                    screen.blit(startText, startRect)
+                    screen.blit(LHText, LHRect)
+                    frame()
                 # handler for clicking on input
                 if buttonRect.collidepoint(event.pos):
                     #debugging
@@ -603,6 +635,20 @@ while True:
                     if event.type == pg.QUIT:
                         pg.quit()
                         exit()
+                    if helpRect.collidepoint(event.pos):
+                        print(HS)
+                        for i in range(100):
+                            for event in pg.event.get():
+                                if event.type == pg.QUIT:
+                                    pg.quit()
+                                    exit()
+                        render()
+                        screen.blit(W1Text, W1Rect)
+                        screen.blit(W2Text, W2Rect)
+                        screen.blit(W3Text, W3Rect)
+                        screen.blit(startText, startRect)
+                        screen.blit(LHText, LHRect)
+                        frame()
                     if event.type == pg.MOUSEBUTTONDOWN:
 
                         if res2Rect.collidepoint(event.pos):
@@ -636,6 +682,20 @@ while True:
                     if event.type == pg.QUIT:
                         pg.quit()
                         exit()
+                    if helpRect.collidepoint(event.pos):
+                        print(HS)
+                        for i in range(100):
+                            for event in pg.event.get():
+                                if event.type == pg.QUIT:
+                                    pg.quit()
+                                    exit()
+                        render()
+                        screen.blit(W1Text, W1Rect)
+                        screen.blit(W2Text, W2Rect)
+                        screen.blit(W3Text, W3Rect)
+                        screen.blit(startText, startRect)
+                        screen.blit(LHText, LHRect)
+                        frame()
                     if event.type == pg.MOUSEBUTTONDOWN:
                         if repRect.collidepoint(event.pos):
 

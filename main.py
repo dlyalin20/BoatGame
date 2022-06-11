@@ -95,6 +95,15 @@ ball = pg.image.load("assets/ball.png")
 ballSize = (10, 10)
 ball = pg.transform.scale(ball, ballSize)
 
+# win meme
+win = pg.image.load("assets/win.jpg")
+winSize = (400, 400)
+win = pg.transform.scale(win, winSize)
+
+# lose meme
+lose = pg.image.load("assets/lose.png")
+loseSize = (400, 400)
+lose = pg.transform.scale(lose, loseSize)
 ####################### END INITIAL SETUP #######################
 
 ####################### VARIABLE SETUP #######################
@@ -204,7 +213,7 @@ buoyancy simulation. \n
 After this, the motion of the boat is updated each "round" using the following steps:\n
 \t 1. The x-velocity of the boat is found using conservation of momentum.\n
 \t 2. The drag force on the boat is found by multiplying the drag coefficient\n
-\t (4.7856e-02, or .5 * 997* .0003 * .4 * .8, \n 
+\t (4.7856e-02, or .5 * 997* .0003 * .4 * .8, \n
 \t or 1/2 * density of water * drag coefficient * area dimensions) by the square of the \n
 \t boat's x-velocity. \n
 \t 3. The acceleration of the boat is found by dividing drag force by boat mass. \n
@@ -216,10 +225,10 @@ In pseudocode, this approximately looks like: \n
 \t x_vel_boat = (rock_mass * x_vel_ball) / boat_mass \n
 \t while x_vel_boat >= 1 and xBoat > 0: \n
 \t \t drag = DRAG_COEFFICIENT * (boatVelocity ** 2) \n
-\t \t xBoat -= x_vel_boat \n 
+\t \t xBoat -= x_vel_boat \n
 \t \t dist_from_goal -= boatVelocity \n
 \t \t acceleration = drag / actualMass # mass of boat - mass of ball \n
-\t \t x_vel_boat -= acceleration\n 
+\t \t x_vel_boat -= acceleration\n
 In addition, the BoatGame displays the center of mass (COM) of the system, and, \n
 if the user pays close attention, simulates the projectile motion of the  \n
 cannonball using the kinematics equations.
@@ -385,15 +394,16 @@ def render():
 
 # Rendered if player lost
 def lostRender():
-    screen.blit(lostText, lostRect)
+    #screen.blit(lostText, lostRect)
     screen.blit(repText, repRect)
     screen.blit(resText, resRect)
+    screen.blit(lose, (400,0))
 
 # rendered if player won
 def wonRender():
-    screen.blit(wonText, wonRect)
+    #screen.blit(wonText, wonRect)
     screen.blit(resText, res2Rect)
-
+    screen.blit(win, (400,0))
 # Update screen
 def frame():
     # update

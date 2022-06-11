@@ -37,6 +37,8 @@ WATER_BLUE = (58, 213, 199)
 BLACK = (0, 0, 0)
 GREY = (127, 127, 127)
 RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+GOLD = (255, 215, 0)
 color_inactive = pg.Color(GREY)
 color_active = pg.Color(BLACK)
 
@@ -59,7 +61,7 @@ targetSize = (10, 10)
 targetColor = pg.Color(255, 0, 0)
 target = pg.Surface(targetSize)
 
-# goal
+# COM
 comSize = (10, 10)
 comColor = pg.Color(255, 0, 0)
 com = pg.Surface(comSize)
@@ -145,40 +147,51 @@ smallFont = pg.font.Font(None, 16)
 
 # control panel
 CPS = "Control Panel: "
-control_panel = bigFont.render(CPS, True, BLACK, WATER_BLUE)
+control_panel = bigFont.render(CPS, True, BLACK, WHITE)
 cpRect = control_panel.get_rect()
 cpRect.center = (50, 600)
 
 # Cannonball Mass
 MS = "Cannonball Mass: " + str(ballMass)
-massText = smallFont.render(MS, True, BLACK, WATER_BLUE)
+massText = smallFont.render(MS, True, BLACK, WHITE)
 massRect = massText.get_rect()
-massRect.center = (63, 620)
+massRect.center = (64, 620)
 
 # Boat Mass
 BS = "Boat Mass: " + str(boatMass)
-boatText = smallFont.render(BS, True, BLACK, WATER_BLUE)
+boatText = smallFont.render(BS, True, BLACK, WHITE)
 bRect = boatText.get_rect()
-bRect.center = (45, 640)
+bRect.center = (47, 640)
 
 # Target Distance
 TDS = "Target Distance: " + str(dist_from_goal)
-targetText = smallFont.render(TDS, True, BLACK, WATER_BLUE)
+targetText = smallFont.render(TDS, True, BLACK, WHITE)
 tRect = targetText.get_rect()
-tRect.center = (65, 660)
+tRect.center = (64, 660)
 
 # Velocity Text
 VS = "Input Velocity: "
-vText = smallFont.render(VS, True, BLACK, WATER_BLUE)
+vText = smallFont.render(VS, True, BLACK, WHITE)
 vRect = vText.get_rect()
-vRect.center = (45, 680)
+vRect.center = (44, 680)
 
 # Angle Text
 AS = "Input Launch Angle (Degrees): "
-aText = smallFont.render(AS, True, BLACK, WATER_BLUE)
+aText = smallFont.render(AS, True, BLACK, WHITE)
 aRect = aText.get_rect()
-aRect.center = (55, 700)
+aRect.center = (56, 700)
 
+# COM TEXT
+COMS = "COM"
+comText = smallFont.render(COMS, True, BLACK)
+comRect = aText.get_rect()
+comRect.topleft = (xCOM, yCOM+10)
+
+# goal TEXT
+GS = "GOAL"
+goalText = smallFont.render(GS, True, GOLD)
+goalRect = aText.get_rect()
+goalRect.topleft = (goal, 510)
 # Lost Text
 LS = "You Lost!"
 lostText = largeFont.render(LS, True, RED)
@@ -204,7 +217,7 @@ userAngle = ''
 
 # Enter Button
 ES = "Fire!"
-buttonText = bigFont.render(ES, True, BLACK, GREY)
+buttonText = bigFont.render(ES, True, BLACK, RED)
 buttonRect = buttonText.get_rect()
 buttonRect.center = (17, 720)
 
@@ -232,15 +245,20 @@ def render():
     screen.blit(water, (0, 500))
     screen.blit(boat, (xBoat, yBoat))
     screen.blit(sailor, (xBoat + 60, 460))
+    pg.draw.rect(screen, WHITE , pg.Rect(0,580,200,150))
     screen.blit(control_panel, cpRect)
     screen.blit(massText, massRect)
     screen.blit(boatText, bRect)
     screen.blit(targetText, tRect)
+    screen.blit(comText,  (xCOM, yCOM+10))
+    screen.blit(goalText,  (goal, 500+10))
     screen.blit(vText, vRect)
     screen.blit(aText, aRect)
     screen.blit(buttonText, buttonRect)
+    pg.draw.rect(screen, BLACK , pg.Rect(0,580,200,150),  2)
 
-    if fired and xBall>850:
+
+    if fired and xBall>xBoat+50:
         screen.blit(ball, (xBall, yBall))
 
     if angle > 0:
@@ -467,7 +485,7 @@ while True:
                             yCOM = getYCOM()
 
                             fired = False
-                            
+
                         if resRect.collidepoint(event.pos):
 
                             xBoat = 700

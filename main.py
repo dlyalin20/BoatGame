@@ -12,7 +12,7 @@ from math import cos, sin, radians
 5. Shift control panel down
 6. Add units
 7. Add buoyancy
-8. Fix reset and restart functions
+8. Replace COM symbol
 '''
 
 ####################### INITIAL SETUP #######################
@@ -36,6 +36,7 @@ WHITE = (255, 255, 255)
 WATER_BLUE = (58, 213, 199)
 BLACK = (0, 0, 0)
 GREY = (127, 127, 127)
+RED = (255, 0, 0)
 color_inactive = pg.Color(GREY)
 color_active = pg.Color(BLACK)
 
@@ -180,7 +181,11 @@ aRect.center = (55, 700)
 
 # Lost Text
 LS = "You Lost!"
-lostText = largeFont.render(LS, True, (255, 0, 0))
+lostText = largeFont.render(LS, True, RED)
+
+# Won Text
+WS = "You Won!"
+wonText = largeFont.render(WS, True, RED)
 
 ####################### END TEXT SETUP #######################
 
@@ -208,6 +213,8 @@ resS = "Reset Game"
 resText = bigFont.render(resS, True, BLACK, GREY)
 resRect = resText.get_rect()
 resRect.center = (640, 670)
+res2Rect = resText.get_rect()
+res2Rect.center = (595, 670)
 
 # Replay Button
 repS = "Replay Level"
@@ -267,6 +274,9 @@ def lostRender():
     screen.blit(repText, repRect)
     screen.blit(resText, resRect)
 
+def wonRender():
+    screen.blit(wonText, (500, 600))
+    screen.blit(resText, res2Rect)
 
 # Update screen
 def frame():
@@ -403,9 +413,38 @@ while True:
         boatVelocity = 0
 
         if abs(dist_from_goal) < 5:
-            print("You won: " + str(dist_from_goal))
-            pg.quit()
-            exit()
+            while fired:
+
+                for event in pg.event.quit():
+                    if event.type == pg.QUIT:
+                        pg.quit()
+                        exit()
+                    if event.type == pg.MOUSEBUTTONDOWN:
+
+                        if resRect.collidepoint(event.pos):
+
+                            xBoat = 700
+                            goal = makeGoal()
+                            dist_from_goal = xBoat - goal
+
+                            xBall = 800
+                            yBall = 460
+                            xVelocity = 0
+                            yVelocity = 0
+
+                            ballMass = makeBallMass()
+                            boatMass = makeBoatMass()
+                            actualMass = boatMass - ballMass
+
+                            xCOM = getXCOM()
+                            yCOM = getYCOM()
+
+                            fired = False
+
+                render()
+                wonRender()
+                frame()
+
         else:
             while fired:
 
@@ -428,9 +467,11 @@ while True:
                             yCOM = getYCOM()
 
                             fired = False
+                            
                         if resRect.collidepoint(event.pos):
-                            xBoat = 700
 
+                            xBoat = 700
+                            goal = makeGoal()
                             dist_from_goal = xBoat - goal
 
                             xBall = 800
@@ -438,16 +479,14 @@ while True:
                             xVelocity = 0
                             yVelocity = 0
 
+                            ballMass = makeBallMass()
+                            boatMass = makeBoatMass()
+                            actualMass = boatMass - ballMass
+
                             xCOM = getXCOM()
                             yCOM = getYCOM()
 
                             fired = False
-
-                            goal = makeGoal()
-
-                            ballMass = makeBallMass()
-                            boatMass = makeBoatMass()
-                            actualMass = boatMass - ballMass
 
                 render()
                 lostRender()

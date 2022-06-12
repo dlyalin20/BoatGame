@@ -113,6 +113,16 @@ win = pg.transform.scale(win, winSize)
 lose = pg.image.load("assets/lose.png")
 loseSize = (400, 400)
 lose = pg.transform.scale(lose, loseSize)
+
+#win sound
+wSound = pg.mixer.Sound("assets/winsound.wav")
+wSound.set_volume(.25)
+wPlay = 0
+
+#lose Sound
+lSound = pg.mixer.Sound("assets/losesound.wav")
+lSound.set_volume(.25)
+lPlay = 0
 ####################### END INITIAL SETUP #######################
 
 ####################### VARIABLE SETUP #######################
@@ -413,12 +423,17 @@ def lostRender():
     screen.blit(repText, repRect)
     screen.blit(resText, resRect)
     screen.blit(lose, (400,0))
-
+    global lPlay
+    if lPlay==0:
+        lSound.play()
 # rendered if player won
 def wonRender():
     screen.blit(wonText, wonRect)
     screen.blit(resText, res2Rect)
     screen.blit(win, (400,0))
+    global wPlay
+    if wPlay==0:
+        wSound.play()
 
 # Update screen
 def frame():
@@ -541,7 +556,9 @@ while True:
 
 
     if not fired:
-
+        pg.mixer.stop()
+        wPlay=0
+        lPlay=0
         for event in pg.event.get(): # grab events
             if event.type == pg.QUIT:
                 pg.quit()
@@ -696,10 +713,10 @@ while True:
                             yCOM = getYCOM()
 
                             fired = False
-
                 render()
                 wonRender()
                 frame()
+                wPlay+=1
 
         else:
             while fired:
@@ -758,9 +775,8 @@ while True:
                             yCOM = getYCOM()
 
                             fired = False
-
                 render()
                 lostRender()
                 frame()
-
+                lPlay +=1
 ####################### END DRIVER LOOP #######################

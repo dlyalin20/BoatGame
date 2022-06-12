@@ -20,9 +20,10 @@ to either 'Replay' the same level, or 'Restart' the game with new figures.
 
 To most effectively win BoatGame, the player should rely on the underlying physics. Apart from
 having access to the target distance in the control panel, the player can also find there
-the mass of the boat and of the cannonball. It should be noted that, in the following calculations,
-the mass of the boat has the mass of cannonball subtracted from it once the cannonball has been fired.
-Additionally, each pixel on the screen is treated as one pixel for a total of 1200.
+the mass of the boat and of the cannonball(the cannon is treated as massless). It
+should be noted that, in the following calculations,the mass of the boat has the mass of cannonball
+subtracted from it once the cannonball has been fired. Additionally, each pixel on the screen is treated as 
+one pixel for a total of 1200 in a row.
 
 After, the cannonball is fired, conservation of momentum is used to find the starting velocity of the
 boat.

@@ -44,7 +44,7 @@ DRAG_COEFFICIENT = 4.7856e-02  # .5 * 997* .0003 * .4 * .8
 
 # colors
 WHITE = (255, 255, 255)
-WATER_BLUE = (58, 213, 199)
+WATER_BLUE = (0,94,184)
 BLACK = (0, 0, 0)
 GREY = (127, 127, 127)
 RED = (255, 0, 0)
@@ -62,7 +62,7 @@ sky = pg.transform.scale(sky, skySize)
 
 # water
 waterSize = (1200, 300)
-waterColor = pg.Color(48, 213, 200)
+waterColor = pg.Color(WATER_BLUE)
 water = pg.Surface(waterSize)
 pg.draw.rect(water, waterColor, water.get_rect())
 
@@ -207,13 +207,14 @@ button, projecting the cannonball to the right and sending the boat some distanc
 If the boat is within 65 meters of the target, the player wins. Otherwise, they have the chance \n
 to either 'Replay' the same level, or 'Restart' the game with new figures. \n\n
 
+
 To most effectively win BoatGame, the player should rely on the underlying physics. Apart from \n
-having access to the target distance in the control panel, the player can also find there \n
-the mass of the boat and of the cannonball. It should be noted that, in the following calculations, \n
-the mass of the boat has the mass of cannonball subtracted from it once the cannonball has been fired. \n
-Additionally, each pixel on the screen is treated as one pixel for a total of 1200. \n
-After, the cannonball is fired, conservation of momentum is used to find the starting velocity of the \n
-boat. \n
+having access to the target distance in the control panel, the player can also find there   \n
+the mass of the boat and of the cannonball (the cannon is treated as massless). It  \n
+should be noted that, in the following calculations,the mass of the boat has the mass of cannonball \n
+subtracted from it once the cannonball has been fired. Additionally, each pixel on the screen is treated as \n
+one pixel for a total of 1200 in a row. \n\n
+
 First, the cosine of the launch angle (in radians) is multipled by the input velocity to find the \n
 starting x-velocity of the cannonball. This looks as follows: \n
 \t x_vel_ball = cosine(angle) * userVelocity \n

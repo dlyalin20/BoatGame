@@ -20,14 +20,10 @@ from math import cos, sin, radians
 
 # TO-DO LATER
 '''
-1. Fix control panel aesthetic
 2. Animate clouds & add color gradient to water & sky
-3. Add intro slide & help slide
 4. Add general classes
-5. Shift control panel down
 7. Add buoyancy
 8. Replace COM symbol
-9. Make win/lose screen nicer
 '''
 
 ####################### INITIAL SETUP #######################

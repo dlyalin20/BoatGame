@@ -2,7 +2,8 @@
 
 To run the BoatGame, first please make sure that you have Python 2 or 
 3 installed. Then, simply pull the github link, enter the "dist" directory
-and run `./main`. If you encounter any errors, you most likely simply have to change the runtime permissions on the executable, meaning you should run the command `chmod u+x main`. If other errors are experienced, please contact the developers at [dlyalin20@stuy.edu](dlyalin20@stuy.edu).
+and run `./main`. The game takes ~10 seconds to load in because Python was not designed to be converted to executables.
+If you encounter any errors, you most likely simply have to change the runtime permissions on the executable, meaning you should run the command `chmod u+x main`. If other errors are experienced, please contact the developers at [dlyalin20@stuy.edu](dlyalin20@stuy.edu).
 
 # Instructions for Playing the BoatGame
 

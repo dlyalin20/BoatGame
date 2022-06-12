@@ -23,7 +23,6 @@ from math import cos, sin, radians
 2. Animate clouds & add color gradient to water & sky
 4. Add general classes
 7. Add buoyancy
-8. Replace COM symbol
 '''
 
 ####################### INITIAL SETUP #######################

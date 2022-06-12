@@ -40,12 +40,13 @@ boat's x-velocity.
 This loop continues until the x-velocity of the boat is less than 1 m/s, or until the boat moves off the edge of the screen.
 
 In pseudocode, this approximately looks like:
-`x_vel_boat = (rock_mass * x_vel_ball) / boat_mass`
-`while x_vel_boat >= 1 and xBoat > 0:`
-`    drag = DRAG_COEFFICIENT * (boatVelocity ** 2)`
-`    xBoat -= x_vel_boat`
-`    dist_from_goal -= boatVelocity`
-`    acceleration = drag / actualMass # mass of boat - mass of ball`
-`    x_vel_boat -= acceleration`
-
+```
+x_vel_boat = (rock_mass * x_vel_ball) / boat_mass
+while x_vel_boat >= 1 and xBoat > 0:
+    drag = DRAG_COEFFICIENT * (boatVelocity ** 2)
+    xBoat -= x_vel_boat
+    dist_from_goal -= boatVelocity
+    acceleration = drag / actualMass # mass of boat - mass of ball
+    x_vel_boat -= acceleration
+```
 In addition, the BoatGame displays the center of mass (COM) of the system, and, if the user pays close attention, simulates the projectile motion of the cannonball using the kinematics equations.

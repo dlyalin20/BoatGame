@@ -1,6 +1,18 @@
+import subprocess
+import importlib.util
+from sys import executable
+
+package_name = "pygame"
+
+spec = importlib.util.find_spec(package_name)
+if spec is None:
+    print(package_name + " is not installed. Installing.")
+    subprocess.check_call([executable, "-m", "pip", "install", package_name])
+
 import pygame as pg
 from sys import exit
 from time import sleep
+from sys import modules
 from random import seed, uniform
 from math import cos, sin, radians
 

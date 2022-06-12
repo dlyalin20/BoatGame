@@ -162,7 +162,7 @@ def getXCOM():
 xCOM = getXCOM()
 
 def getYCOM():
-    return ((yBoat+70) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
+    return ((490) * actualMass + yBall * ballMass)  / (actualMass + ballMass)
 yCOM = getYCOM()
 
 ####################### END VARIABLE SETUP #######################
@@ -206,7 +206,7 @@ boat. \n
 The player does this by inputting a certain start velocity, in meters per second, and angle, \n
 in degrees, for the cannon on the boat to shoot the cannonball at. They then hit the 'Fire!' \n
 button, projecting the cannonball to the right and sending the boat some distance to the left.\n
-If the boat is within 75 meters of the target, the player wins. Otherwise, they have the chance \n
+If the boat is within 65 meters of the target, the player wins. Otherwise, they have the chance \n
 to either 'Replay' the same level, or 'Restart' the game with new figures. \n\n
 
 To most effectively win BoatGame, the player should rely on the underlying physics. Apart from \n
@@ -364,7 +364,7 @@ def render():
 
     targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)) + " m", True, BLACK, WHITE)
     tRect = targetText.get_rect()
-    tRect.center = (73, 660)
+    tRect.center = (72, 660)
     screen.blit(targetText, tRect)
 
     screen.blit(comText,  (xCOM, yCOM+10))
@@ -650,7 +650,7 @@ while True:
 
         boatVelocity = 0
 
-        if abs(dist_from_goal) < 75:
+        if abs(dist_from_goal) < 65:
             while fired:
 
                 for event in pg.event.get():
@@ -724,7 +724,7 @@ while True:
 
                             xBoat = 700
 
-                            dist_from_goal = xBoat +75 - goal
+                            dist_from_goal = xBoat + 75 - goal
 
                             xBall = 800
                             yBall = 460

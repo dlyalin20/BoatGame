@@ -56,7 +56,7 @@ color_active = pg.Color(BLACK)
 clock = pg.time.Clock()
 
 # sky
-sky = pg.image.load("assets/sky.jpeg")
+sky = pg.image.load("assets/sky.jpg")
 skySize = (1200, 500)
 sky = pg.transform.scale(sky, skySize)
 
@@ -72,9 +72,9 @@ targetColor = pg.Color(255, 0, 0)
 target = pg.Surface(targetSize)
 
 # COM
+com = pg.image.load("assets/com.png")
 comSize = (10, 10)
-comColor = pg.Color(255, 0, 0)
-com = pg.Surface(comSize)
+com = pg.transform.scale(com, comSize)
 
 # help icon
 help = pg.image.load("assets/help.png")
@@ -134,7 +134,7 @@ seed()
 
 # makes random ball mass
 def makeBallMass():
-    return round(uniform(.45, 23), 2)
+    return round(uniform(.45, 15), 2)
 ballMass = makeBallMass()
 
 # makes random boat mass
@@ -355,10 +355,16 @@ def render():
     massRect.center = (70, 620)
     screen.blit(massText, massRect)
 
-    boatText = smallFont.render(BS + str(boatMass) + " kg", True, BLACK, WHITE)
-    bRect = boatText.get_rect()
-    bRect.center = (55, 640)
-    screen.blit(boatText, bRect)
+    if fired:
+        boatText = smallFont.render(BS + str(round(actualMass, 2)) + " kg", True, BLACK, WHITE)
+        bRect = boatText.get_rect()
+        bRect.center = (55, 640)
+        screen.blit(boatText, bRect)
+    else:
+        boatText = smallFont.render(BS + str(round(boatMass, 2)) + " kg", True, BLACK, WHITE)
+        bRect = boatText.get_rect()
+        bRect.center = (55, 640)
+        screen.blit(boatText, bRect)
 
     targetText = smallFont.render(TDS + str(round(dist_from_goal, 2)) + " m", True, BLACK, WHITE)
     tRect = targetText.get_rect()
@@ -386,7 +392,6 @@ def render():
     screen.blit(target, (goal, 500))
 
     # COM drawing
-    pg.draw.rect(com, comColor, com.get_rect())
     screen.blit(com, (xCOM, yCOM))
 
     # velocity input rendering
@@ -551,12 +556,11 @@ while True:
                                 pg.quit()
                                 exit()
                     render()
-                    screen.blit(W1Text, W1Rect)
-                    screen.blit(W2Text, W2Rect)
-                    screen.blit(W3Text, W3Rect)
-                    screen.blit(startText, startRect)
-                    screen.blit(LHText, LHRect)
-                    frame()
+                    i=0
+                    while (i<60):
+                        screen.blit(LHText, LHRect)
+                        frame()
+                        i+=1
                 # handler for clicking on input
                 if buttonRect.collidepoint(event.pos):
                     #debugging

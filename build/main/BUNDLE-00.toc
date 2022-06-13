@@ -1,3 +1,0 @@
-([('main',
-   '/Users/Daniel/Desktop/School Stuff/GitHub/BoatGame/dist/main',
-   'EXECUTABLE')],)
